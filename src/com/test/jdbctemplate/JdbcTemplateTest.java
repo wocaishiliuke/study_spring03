@@ -7,7 +7,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 public class JdbcTemplateTest {
 	@Test
 	public void test() {
-		//1.创建数据源(spring提供的)
+		//1.创建数据源(spring提供的数据源)
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost:3306/test_spring");

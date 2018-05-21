@@ -9,5 +9,61 @@
 		http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
+        
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	<!-- spring内置的连接池 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/test_spring"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+	</bean> -->
+	<!-- Apache DBCP连接池 -->
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/test_spring"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+	</bean> -->
+	<!-- C3P0连接池 -->
+	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test_spring"/>
+		<property name="user" value="root"/>
+		<property name="password" value="root"/>
+	</bean> -->
+	<!-- Hikari连接池 -->
+	<!-- <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test_spring"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+	</bean> -->
+	<!-- Druid连接池 -->
+	<!-- <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/test_spring"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+	</bean> -->
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- <constructor-arg name="dataSource" ref="dataSource"/> -->
+	</bean>
+	
+	<bean id="bookDao" class="com.test.jdbctemplate.crud.BookDao">
+		<!-- 方式1：直接走setJdbcTemplate()，即注入jdbcTemplate实例 -->
+		<!-- <property name="jdbcTemplate" ref="jdbcTemplate"/> -->
+		<!-- 方式2：走setDataSource()，即注入dataSource实例，此时就不需要配置jdbcTemplate的bean了 -->
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
 	
 </beans>
